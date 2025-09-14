@@ -1,0 +1,29 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "flags",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "timestamp",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "flags",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "verdict",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "timestamp",
+          "order": "DESCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
