@@ -302,7 +302,9 @@ export default function ResultsDashboard() {
                           <span className="text-blue-600 text-sm font-medium">SEBI Check:</span>
                           <span className="text-sm text-gray-700">{sebiCheck.advisorName}</span>
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                            sebiCheck.status === 'Found' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                            (sebiCheck.status as string) === 'Found' ? 'bg-green-100 text-green-800' : 
+                            (sebiCheck.status as string) === 'Checking...' ? 'bg-yellow-100 text-yellow-800' : 
+                            'bg-red-100 text-red-800'
                           }`}>
                             {sebiCheck.status}
                           </span>

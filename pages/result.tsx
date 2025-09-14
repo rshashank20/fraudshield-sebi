@@ -99,7 +99,7 @@ export default function Result() {
       }
     } catch (error) {
       console.error('Error reporting:', error)
-      alert(`Failed to submit report: ${error.message}`)
+      alert(`Failed to submit report: ${error instanceof Error ? error.message : 'Unknown error'}`)
     } finally {
       setIsReporting(false)
     }

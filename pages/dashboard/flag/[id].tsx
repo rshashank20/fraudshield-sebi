@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { doc, getDoc, updateDoc, arrayUnion, serverTimestamp } from 'firebase/firestore'
 import { db } from '../../../lib/firebase'
-import { GetServerSideProps } from 'next'
 
 interface Flag {
   id: string
@@ -362,12 +361,3 @@ export default function FlagDetails({ flagId }: FlagDetailsProps) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { id } = context.params!
-  
-  return {
-    props: {
-      flagId: id as string
-    }
-  }
-}

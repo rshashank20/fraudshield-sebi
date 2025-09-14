@@ -2,7 +2,7 @@
 // Documentation: https://www.alphavantage.co/documentation/
 
 interface AlphaVantageResponse {
-  'Meta Data': {
+  'Meta Data'?: {
     '1. Information': string
     '2. Symbol': string
     '3. Last Refreshed': string
@@ -10,7 +10,7 @@ interface AlphaVantageResponse {
     '5. Output Size': string
     '6. Time Zone': string
   }
-  'Time Series (60min)': {
+  'Time Series (60min)'?: {
     [key: string]: {
       '1. open': string
       '2. high': string
@@ -19,6 +19,8 @@ interface AlphaVantageResponse {
       '5. volume': string
     }
   }
+  'Error Message'?: string
+  'Note'?: string
 }
 
 interface PriceDataPoint {
@@ -45,6 +47,12 @@ class RateLimiter {
     }
     
     this.calls.push(now)
+  }
+
+  isRateLimited(): boolean {
+    const now = Date.now()
+    this.calls = this.calls.filter(time => now - time < this.windowMs)
+    return this.calls.length >= this.maxCalls
   }
 }
 
@@ -129,6 +137,10 @@ export async function fetchRealTimePrice(ticker: string): Promise<PriceDataPoint
 function processAlphaVantageData(data: AlphaVantageResponse): PriceDataPoint[] {
   const timeSeries = data['Time Series (60min)']
   const dataPoints: PriceDataPoint[] = []
+
+  if (!timeSeries) {
+    return dataPoints
+  }
 
   // Get last 24 hours of data
   const sortedEntries = Object.entries(timeSeries)
@@ -216,6 +228,6 @@ export function isApiKeyConfigured(): boolean {
 export function getApiStatus(): { configured: boolean, rateLimited: boolean } {
   return {
     configured: isApiKeyConfigured(),
-    rateLimited: rateLimiter.calls.length >= rateLimiter.maxCalls
+    rateLimited: rateLimiter.isRateLimited()
   }
 }
