@@ -38,16 +38,12 @@ export default function Verify() {
     setIsSubmitting(true)
 
     try {
-      // Check if we're in production (static export)
-      const isProduction = typeof window !== 'undefined' && window.location.hostname.includes('web.app')
-      
+      // Always use client-side analysis for static export
+      // API routes don't work in static export
       let result
       
-      if (isProduction) {
-        // Client-side fallback for production
-        result = await performClientSideAnalysis(fileInfo.extractedText || fileInfo.name, 'file')
-      } else {
-        // Use API for local development
+      try {
+        // Try API first (for local development)
         const response = await fetch('/api/analyze', {
           method: 'POST',
           headers: {
@@ -59,7 +55,15 @@ export default function Verify() {
           }),
         })
 
-        result = await response.json()
+        if (response.ok) {
+          result = await response.json()
+        } else {
+          throw new Error('API not available')
+        }
+      } catch (error) {
+        // Fallback to client-side analysis
+        console.log('Using client-side analysis fallback')
+        result = await performClientSideAnalysis(fileInfo.extractedText || fileInfo.name, 'file')
       }
       
       // Store result in sessionStorage to pass to result page
@@ -82,16 +86,12 @@ export default function Verify() {
     setIsSubmitting(true)
 
     try {
-      // Check if we're in production (static export)
-      const isProduction = typeof window !== 'undefined' && window.location.hostname.includes('web.app')
-      
+      // Always use client-side analysis for static export
+      // API routes don't work in static export
       let result
       
-      if (isProduction) {
-        // Client-side fallback for production
-        result = await performClientSideAnalysis(inputText.trim(), inputType)
-      } else {
-        // Use API for local development
+      try {
+        // Try API first (for local development)
         const response = await fetch('/api/analyze', {
           method: 'POST',
           headers: {
@@ -103,7 +103,15 @@ export default function Verify() {
           }),
         })
 
-        result = await response.json()
+        if (response.ok) {
+          result = await response.json()
+        } else {
+          throw new Error('API not available')
+        }
+      } catch (error) {
+        // Fallback to client-side analysis
+        console.log('Using client-side analysis fallback')
+        result = await performClientSideAnalysis(inputText.trim(), inputType)
       }
       
       // Store result in sessionStorage to pass to result page
