@@ -78,19 +78,27 @@ export default function FlagDetails() {
   const handleTriageAction = async (action: string) => {
     if (!flag) return
 
+    console.log('Starting triage action:', action, 'for flag:', flag.id)
     setUpdating(action)
+    
     try {
       const flagRef = doc(db, 'flags', flag.id)
+      console.log('Updating flag in Firestore:', flagRef.path)
       
-      await updateDoc(flagRef, {
+      const updateData = {
         status: action === 'fraud' ? 'fraud' : action === 'false_alarm' ? 'false_alarm' : 'more_info',
         updatedAt: serverTimestamp(),
         audit: arrayUnion({
           action,
           actor: 'regulator_demo',
-          ts: serverTimestamp()
+          ts: new Date() // Use regular Date instead of serverTimestamp() for arrayUnion
         })
-      })
+      }
+      
+      console.log('Update data:', updateData)
+      
+      await updateDoc(flagRef, updateData)
+      console.log('Successfully updated flag in Firestore')
 
       // Update local state
       setFlag(prev => prev ? {
@@ -107,9 +115,15 @@ export default function FlagDetails() {
       } : null)
 
       setShowConfirmModal(null)
+      alert(`Flag successfully marked as ${action.replace('_', ' ')}!`)
     } catch (err) {
       console.error('Error updating flag:', err)
-      alert('Failed to update flag. Please try again.')
+      console.error('Error details:', {
+        message: err instanceof Error ? err.message : 'Unknown error',
+        code: (err as any)?.code,
+        stack: err instanceof Error ? err.stack : undefined
+      })
+      alert(`Failed to update flag: ${err instanceof Error ? err.message : 'Unknown error'}. Please check console for details.`)
     } finally {
       setUpdating(null)
     }
@@ -294,7 +308,10 @@ export default function FlagDetails() {
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Triage Actions</h2>
             <div className="flex flex-wrap gap-4">
               <button
-                onClick={() => setShowConfirmModal('fraud')}
+                onClick={() => {
+                  console.log('Mark Fraud button clicked')
+                  setShowConfirmModal('fraud')
+                }}
                 disabled={updating !== null}
                 className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
@@ -302,7 +319,10 @@ export default function FlagDetails() {
               </button>
               
               <button
-                onClick={() => setShowConfirmModal('false_alarm')}
+                onClick={() => {
+                  console.log('Mark False Alarm button clicked')
+                  setShowConfirmModal('false_alarm')
+                }}
                 disabled={updating !== null}
                 className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
@@ -310,7 +330,10 @@ export default function FlagDetails() {
               </button>
               
               <button
-                onClick={() => setShowConfirmModal('more_info')}
+                onClick={() => {
+                  console.log('Request More Info button clicked')
+                  setShowConfirmModal('more_info')
+                }}
                 disabled={updating !== null}
                 className="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-2 px-4 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
@@ -353,19 +376,34 @@ export default function FlagDetails() {
               </p>
               <div className="flex space-x-3">
                 <button
-                  onClick={() => handleTriageAction(showConfirmModal)}
+                  onClick={() => {
+                    console.log('Confirm button clicked for action:', showConfirmModal)
+                    handleTriageAction(showConfirmModal)
+                  }}
                   className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg"
                 >
                   Confirm
                 </button>
                 <button
-                  onClick={() => setShowConfirmModal(null)}
+                  onClick={() => {
+                    console.log('Cancel button clicked')
+                    setShowConfirmModal(null)
+                  }}
                   className="bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold py-2 px-4 rounded-lg"
                 >
                   Cancel
                 </button>
               </div>
             </div>
+          </div>
+        )}
+        
+        {/* Debug Info */}
+        {process.env.NODE_ENV === 'development' && (
+          <div className="fixed bottom-4 right-4 bg-black bg-opacity-75 text-white p-2 rounded text-xs">
+            <div>showConfirmModal: {showConfirmModal || 'null'}</div>
+            <div>updating: {updating || 'null'}</div>
+            <div>flag status: {flag?.status || 'null'}</div>
           </div>
         )}
       </div>
