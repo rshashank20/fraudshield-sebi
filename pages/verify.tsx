@@ -38,43 +38,10 @@ export default function Verify() {
     setIsSubmitting(true)
 
     try {
-      // Always use client-side analysis for static export
+      // Use client-side analysis for static deployment
       // API routes don't work in static export
-      let result
-      
-      try {
-        // Try API first (for local development)
-        const response = await fetch('/api/analyze', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            text: fileInfo.extractedText || fileInfo.name,
-            type: 'file'
-          }),
-        })
-
-        if (response.ok) {
-          const contentType = response.headers.get('content-type')
-          if (contentType && contentType.includes('application/json')) {
-            result = await response.json()
-          } else {
-            throw new Error('API returned non-JSON response')
-          }
-        } else {
-          throw new Error('API not available')
-        }
-      } catch (error) {
-        // Fallback to client-side analysis
-        console.log('Using client-side analysis fallback:', error)
-        try {
-          result = await performClientSideAnalysis(fileInfo.extractedText || fileInfo.name, 'file')
-        } catch (fallbackError) {
-          console.error('Client-side analysis also failed:', fallbackError)
-          throw new Error('Analysis failed. Please try again.')
-        }
-      }
+      console.log('Using client-side analysis for static deployment')
+      const result = await performClientSideAnalysis(fileInfo.extractedText || fileInfo.name, 'file')
       
       // Store result in sessionStorage to pass to result page
       sessionStorage.setItem('verdictResult', JSON.stringify(result))
@@ -97,43 +64,10 @@ export default function Verify() {
     setIsSubmitting(true)
 
     try {
-      // Always use client-side analysis for static export
+      // Use client-side analysis for static deployment
       // API routes don't work in static export
-      let result
-      
-      try {
-        // Try API first (for local development)
-        const response = await fetch('/api/analyze', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            text: inputText.trim(),
-            type: inputType,
-          }),
-        })
-
-        if (response.ok) {
-          const contentType = response.headers.get('content-type')
-          if (contentType && contentType.includes('application/json')) {
-            result = await response.json()
-          } else {
-            throw new Error('API returned non-JSON response')
-          }
-        } else {
-          throw new Error('API not available')
-        }
-      } catch (error) {
-        // Fallback to client-side analysis
-        console.log('Using client-side analysis fallback:', error)
-        try {
-          result = await performClientSideAnalysis(inputText.trim(), inputType)
-        } catch (fallbackError) {
-          console.error('Client-side analysis also failed:', fallbackError)
-          throw new Error('Analysis failed. Please try again.')
-        }
-      }
+      console.log('Using client-side analysis for static deployment')
+      const result = await performClientSideAnalysis(inputText.trim(), inputType)
       
       // Store result in sessionStorage to pass to result page
       sessionStorage.setItem('verdictResult', JSON.stringify(result))
