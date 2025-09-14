@@ -151,12 +151,10 @@ export default function RegulatorDashboard() {
     } catch (error) {
       console.error('Error generating mock data:', error)
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
-      const errorCode = error instanceof Error ? error.code : undefined
       const errorStack = error instanceof Error ? error.stack : undefined
       
       console.error('Error details:', {
         message: errorMessage,
-        code: errorCode,
         stack: errorStack
       })
       alert(`Error generating mock data: ${errorMessage}. Please check console for details.`)
