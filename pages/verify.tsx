@@ -38,9 +38,37 @@ export default function Verify() {
     setIsSubmitting(true)
 
     try {
-      // Force client-side analysis for now to avoid API issues
-      console.log('Using client-side analysis (forced)')
-      const result = await performClientSideAnalysis(fileInfo.extractedText || fileInfo.name, 'file')
+      // Try API first (works on Vercel), fallback to client-side
+      let result
+      
+      try {
+        console.log('Trying API route...')
+        const response = await fetch('/api/analyze', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            text: fileInfo.extractedText || fileInfo.name,
+            type: 'file'
+          }),
+        })
+
+        if (response.ok) {
+          const contentType = response.headers.get('content-type')
+          if (contentType && contentType.includes('application/json')) {
+            result = await response.json()
+            console.log('API analysis successful:', result)
+          } else {
+            throw new Error('API returned non-JSON response')
+          }
+        } else {
+          throw new Error(`API returned ${response.status}`)
+        }
+      } catch (error) {
+        console.log('API failed, using client-side analysis:', error)
+        result = await performClientSideAnalysis(fileInfo.extractedText || fileInfo.name, 'file')
+      }
       
       // Store result in sessionStorage to pass to result page
       sessionStorage.setItem('verdictResult', JSON.stringify(result))
@@ -63,9 +91,37 @@ export default function Verify() {
     setIsSubmitting(true)
 
     try {
-      // Force client-side analysis for now to avoid API issues
-      console.log('Using client-side analysis (forced)')
-      const result = await performClientSideAnalysis(inputText.trim(), inputType)
+      // Try API first (works on Vercel), fallback to client-side
+      let result
+      
+      try {
+        console.log('Trying API route...')
+        const response = await fetch('/api/analyze', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            text: inputText.trim(),
+            type: inputType,
+          }),
+        })
+
+        if (response.ok) {
+          const contentType = response.headers.get('content-type')
+          if (contentType && contentType.includes('application/json')) {
+            result = await response.json()
+            console.log('API analysis successful:', result)
+          } else {
+            throw new Error('API returned non-JSON response')
+          }
+        } else {
+          throw new Error(`API returned ${response.status}`)
+        }
+      } catch (error) {
+        console.log('API failed, using client-side analysis:', error)
+        result = await performClientSideAnalysis(inputText.trim(), inputType)
+      }
       
       // Store result in sessionStorage to pass to result page
       sessionStorage.setItem('verdictResult', JSON.stringify(result))
