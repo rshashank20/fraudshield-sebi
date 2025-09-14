@@ -101,27 +101,41 @@ export default function RegulatorDashboard() {
     ]
 
     try {
-      // Add mock flags to Firestore with random timestamps
-      for (let i = 0; i < mockFlags.length; i++) {
-        const flag = mockFlags[i]
-        const randomHoursAgo = Math.floor(Math.random() * 24) // Random time in last 24 hours
-        const timestamp = new Date(Date.now() - randomHoursAgo * 60 * 60 * 1000)
-        
-        await addDoc(collection(db, 'flags'), {
-          ...flag,
-          inputType: 'file',
-          reasons: [
-            flag.verdict === 'HIGH RISK' ? 'Contains guaranteed return promises' : 
-            flag.verdict === 'WATCH' ? 'Requires further verification' : 
-            'Appears to be legitimate financial advice'
-          ],
-          evidence: ['https://www.sebi.gov.in/', 'https://www.investor.gov/'],
-          timestamp: serverTimestamp(),
-          reported: false
+      // Add mock flags to Firestore in batches for better performance
+      const batchSize = 5
+      const batches = []
+      
+      for (let i = 0; i < mockFlags.length; i += batchSize) {
+        const batch = mockFlags.slice(i, i + batchSize)
+        batches.push(batch)
+      }
+      
+      for (const batch of batches) {
+        const promises = batch.map(flag => {
+          const randomHoursAgo = Math.floor(Math.random() * 24) // Random time in last 24 hours
+          const timestamp = new Date(Date.now() - randomHoursAgo * 60 * 60 * 1000)
+          
+          return addDoc(collection(db, 'flags'), {
+            ...flag,
+            inputType: 'file',
+            reasons: [
+              flag.verdict === 'HIGH RISK' ? 'Contains guaranteed return promises' : 
+              flag.verdict === 'WATCH' ? 'Requires further verification' : 
+              'Appears to be legitimate financial advice'
+            ],
+            evidence: ['https://www.sebi.gov.in/', 'https://www.investor.gov/'],
+            timestamp: serverTimestamp(),
+            reported: false
+          })
         })
         
-        // Add small delay between inserts
-        await new Promise(resolve => setTimeout(resolve, 100))
+        // Process batch in parallel
+        await Promise.all(promises)
+        
+        // Small delay between batches
+        if (batches.indexOf(batch) < batches.length - 1) {
+          await new Promise(resolve => setTimeout(resolve, 50))
+        }
       }
       
       alert('Mock data generated successfully!')
