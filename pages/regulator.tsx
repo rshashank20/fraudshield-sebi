@@ -26,6 +26,7 @@ export default function RegulatorDashboard() {
   // Generate mock data for demo purposes
   const generateMockData = async () => {
     setIsGeneratingMockData(true)
+    console.log('Starting mock data generation...')
     
     const mockFlags = [
       {
@@ -101,6 +102,9 @@ export default function RegulatorDashboard() {
     ]
 
     try {
+      console.log('Firebase db object:', db)
+      console.log('Collection reference:', collection(db, 'flags'))
+      
       // Add mock flags to Firestore in batches for better performance
       const batchSize = 5
       const batches = []
@@ -110,7 +114,10 @@ export default function RegulatorDashboard() {
         batches.push(batch)
       }
       
+      console.log(`Processing ${batches.length} batches of mock data...`)
+      
       for (const batch of batches) {
+        console.log(`Processing batch with ${batch.length} items...`)
         const promises = batch.map(flag => {
           const randomHoursAgo = Math.floor(Math.random() * 24) // Random time in last 24 hours
           const timestamp = new Date(Date.now() - randomHoursAgo * 60 * 60 * 1000)
@@ -130,7 +137,8 @@ export default function RegulatorDashboard() {
         })
         
         // Process batch in parallel
-        await Promise.all(promises)
+        const results = await Promise.all(promises)
+        console.log(`Batch completed. Added ${results.length} documents.`)
         
         // Small delay between batches
         if (batches.indexOf(batch) < batches.length - 1) {
@@ -138,10 +146,16 @@ export default function RegulatorDashboard() {
         }
       }
       
+      console.log('Mock data generation completed successfully!')
       alert('Mock data generated successfully!')
     } catch (error) {
       console.error('Error generating mock data:', error)
-      alert('Error generating mock data. Please try again.')
+      console.error('Error details:', {
+        message: error.message,
+        code: error.code,
+        stack: error.stack
+      })
+      alert(`Error generating mock data: ${error.message}. Please check console for details.`)
     } finally {
       setIsGeneratingMockData(false)
     }
