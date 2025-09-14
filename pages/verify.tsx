@@ -56,7 +56,12 @@ export default function Verify() {
         })
 
         if (response.ok) {
-          result = await response.json()
+          const contentType = response.headers.get('content-type')
+          if (contentType && contentType.includes('application/json')) {
+            result = await response.json()
+          } else {
+            throw new Error('API returned non-JSON response')
+          }
         } else {
           throw new Error('API not available')
         }
@@ -110,7 +115,12 @@ export default function Verify() {
         })
 
         if (response.ok) {
-          result = await response.json()
+          const contentType = response.headers.get('content-type')
+          if (contentType && contentType.includes('application/json')) {
+            result = await response.json()
+          } else {
+            throw new Error('API returned non-JSON response')
+          }
         } else {
           throw new Error('API not available')
         }
