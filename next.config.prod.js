@@ -1,8 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Remove output: 'export' for local development with API routes
-  // output: 'export', // Only use this for static deployment
-  // trailingSlash: true, // This causes 308 redirects for API routes
+  output: 'export', // For static deployment
+  trailingSlash: true,
   images: {
     unoptimized: true
   },
