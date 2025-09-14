@@ -22,42 +22,54 @@ interface Flag {
   }>
 }
 
-interface FlagDetailsProps {
-  flagId: string
-}
-
-export default function FlagDetails({ flagId }: FlagDetailsProps) {
+export default function FlagDetails() {
   const [flag, setFlag] = useState<Flag | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [updating, setUpdating] = useState<string | null>(null)
   const [showConfirmModal, setShowConfirmModal] = useState<string | null>(null)
   const router = useRouter()
+  const { id: flagId } = router.query
 
   useEffect(() => {
-    if (flagId) {
+    if (flagId && typeof flagId === 'string') {
       fetchFlag(flagId)
     }
-  }, [flagId])
+    
+    // Add timeout to prevent infinite loading
+    const timeout = setTimeout(() => {
+      if (loading) {
+        setError('Request timed out. Please try again.')
+        setLoading(false)
+      }
+    }, 10000) // 10 second timeout
+    
+    return () => clearTimeout(timeout)
+  }, [flagId, loading])
 
   const fetchFlag = async (flagId: string) => {
     try {
+      console.log('Fetching flag with ID:', flagId)
       const flagRef = doc(db, 'flags', flagId)
       const flagSnap = await getDoc(flagRef)
       
+      console.log('Flag snapshot:', flagSnap.exists())
+      
       if (flagSnap.exists()) {
         const data = flagSnap.data()
+        console.log('Flag data:', data)
         setFlag({
           id: flagSnap.id,
           status: 'pending', // Default status
           ...data
         } as Flag)
       } else {
+        console.log('Flag not found in Firestore')
         setError('Flag not found')
       }
     } catch (err) {
       console.error('Error fetching flag:', err)
-      setError('Failed to fetch flag details')
+      setError(`Failed to fetch flag details: ${err instanceof Error ? err.message : 'Unknown error'}`)
     } finally {
       setLoading(false)
     }
