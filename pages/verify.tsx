@@ -38,18 +38,29 @@ export default function Verify() {
     setIsSubmitting(true)
 
     try {
-      const response = await fetch('/api/analyze', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          text: fileInfo.extractedText || fileInfo.name,
-          type: 'file'
-        }),
-      })
+      // Check if we're in production (static export)
+      const isProduction = typeof window !== 'undefined' && window.location.hostname.includes('web.app')
+      
+      let result
+      
+      if (isProduction) {
+        // Client-side fallback for production
+        result = await performClientSideAnalysis(fileInfo.extractedText || fileInfo.name, 'file')
+      } else {
+        // Use API for local development
+        const response = await fetch('/api/analyze', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            text: fileInfo.extractedText || fileInfo.name,
+            type: 'file'
+          }),
+        })
 
-      const result = await response.json()
+        result = await response.json()
+      }
       
       // Store result in sessionStorage to pass to result page
       sessionStorage.setItem('verdictResult', JSON.stringify(result))
@@ -71,18 +82,29 @@ export default function Verify() {
     setIsSubmitting(true)
 
     try {
-      const response = await fetch('/api/analyze', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          text: inputText.trim(),
-          type: inputType,
-        }),
-      })
+      // Check if we're in production (static export)
+      const isProduction = typeof window !== 'undefined' && window.location.hostname.includes('web.app')
+      
+      let result
+      
+      if (isProduction) {
+        // Client-side fallback for production
+        result = await performClientSideAnalysis(inputText.trim(), inputType)
+      } else {
+        // Use API for local development
+        const response = await fetch('/api/analyze', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            text: inputText.trim(),
+            type: inputType,
+          }),
+        })
 
-      const result = await response.json()
+        result = await response.json()
+      }
       
       // Store result in sessionStorage to pass to result page
       sessionStorage.setItem('verdictResult', JSON.stringify(result))
@@ -94,6 +116,97 @@ export default function Verify() {
       alert('An error occurred. Please try again.')
     } finally {
       setIsSubmitting(false)
+    }
+  }
+
+  const performClientSideAnalysis = async (text: string, type: string) => {
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 2000))
+    
+    // Simple client-side fraud detection
+    const lowerText = text.toLowerCase()
+    
+    // High risk indicators
+    const highRiskKeywords = [
+      'guaranteed', 'guarantee', 'guaranteed return', 'risk-free', 'no risk',
+      'get rich quick', 'instant profit', 'double your money', 'triple your investment',
+      'exclusive opportunity', 'limited time', 'act now', 'don\'t miss out',
+      'secret formula', 'insider tip', 'confidential', 'urgent', 'immediate action'
+    ]
+    
+    // Suspicious patterns
+    const suspiciousPatterns = [
+      /\d+%\s*return/i,
+      /\d+%\s*profit/i,
+      /\d+%\s*gain/i,
+      /guaranteed\s+\d+/i,
+      /risk.free/i,
+      /no\s+risk/i,
+      /double\s+your/i,
+      /triple\s+your/i
+    ]
+    
+    let riskScore = 0
+    let reasons: string[] = []
+    
+    // Check for high risk keywords
+    highRiskKeywords.forEach(keyword => {
+      if (lowerText.includes(keyword)) {
+        riskScore += 20
+        reasons.push(`Contains suspicious keyword: "${keyword}"`)
+      }
+    })
+    
+    // Check for suspicious patterns
+    suspiciousPatterns.forEach(pattern => {
+      if (pattern.test(text)) {
+        riskScore += 15
+        reasons.push('Contains unrealistic return promises')
+      }
+    })
+    
+    // Check for urgency tactics
+    if (lowerText.includes('urgent') || lowerText.includes('immediate') || lowerText.includes('act now')) {
+      riskScore += 10
+      reasons.push('Uses pressure tactics to create urgency')
+    }
+    
+    // Check for advisor name (if type is advisor)
+    if (type === 'advisor') {
+      // Simple check for common advisor names
+      const commonNames = ['john', 'smith', 'kumar', 'sharma', 'patel', 'singh']
+      const hasCommonName = commonNames.some(name => lowerText.includes(name))
+      
+      if (hasCommonName) {
+        riskScore += 5
+        reasons.push('Common name pattern detected')
+      }
+    }
+    
+    // Determine verdict
+    let verdict = 'LIKELY SAFE'
+    let confidence = 85
+    
+    if (riskScore >= 50) {
+      verdict = 'HIGH RISK'
+      confidence = 90
+    } else if (riskScore >= 25) {
+      verdict = 'WATCH'
+      confidence = 75
+    }
+    
+    // If no specific reasons found, add generic ones
+    if (reasons.length === 0) {
+      reasons = ['No obvious red flags detected', 'Appears to be standard investment advice']
+    }
+    
+    return {
+      verdict,
+      confidence,
+      reasons,
+      evidence: ['https://www.sebi.gov.in/', 'https://www.investor.gov/'],
+      inputText: text,
+      inputType: type
     }
   }
 

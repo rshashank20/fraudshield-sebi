@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export', // For static deployment
+  // Remove output: 'export' to enable API routes in production
+  // output: 'export', // Only use this for static deployment
   trailingSlash: true,
   images: {
     unoptimized: true

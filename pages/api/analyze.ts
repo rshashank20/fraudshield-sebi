@@ -47,7 +47,7 @@ Also provide confidence (0-100) and specific reasons.`
     let reasons = ['Analysis completed']
     
     // Try to extract JSON from markdown code blocks first
-    let jsonMatch = analysis.match(/```json\s*(\{.*?\})\s*```/s)
+    let jsonMatch = analysis.match(/```json\s*(\{[\s\S]*?\})\s*```/)
     if (jsonMatch) {
       try {
         const jsonResponse = JSON.parse(jsonMatch[1])
