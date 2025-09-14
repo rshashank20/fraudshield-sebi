@@ -1,36 +1,75 @@
-# FraudShield SEBI
+# 🛡️ FraudShield SEBI
 
-A Next.js application for fraud detection and SEBI advisor verification. This application helps investors verify financial advisors and analyze investment tips for potential fraud indicators.
+A comprehensive AI-powered fraud detection platform designed to help investors verify financial advisors and analyze investment tips for potential fraud indicators. Built specifically for the Indian market with SEBI (Securities and Exchange Board of India) compliance.
 
-## Features
+[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-000000?style=for-the-badge&logo=vercel)](https://xyz-sepia-psi.vercel.app)
+[![Next.js](https://img.shields.io/badge/Next.js-14.0.0-000000?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0.0-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Firebase](https://img.shields.io/badge/Firebase-10.7.0-FFCA28?style=for-the-badge&logo=firebase)](https://firebase.google.com/)
 
-- **Advisor Verification**: Check if financial advisors are registered with SEBI
-- **Tip Analysis**: Analyze investment tips and recommendations for fraud indicators
-- **Risk Assessment**: Get detailed risk assessments with confidence scores
-- **Regulator Dashboard**: Monitor flags and system performance
-- **Firebase Integration**: Real-time data storage and retrieval
+## ✨ Features
 
-## Tech Stack
+### 🔍 **Multi-Modal Fraud Detection**
+- **📝 Text Analysis** - Analyze investment tips and recommendations using AI
+- **👤 Advisor Verification** - Check SEBI registration status
+- **🔗 Link Analysis** - Scan URLs for fraud indicators
+- **📁 File Upload** - Support for PDF, DOCX, MP3, WAV, MP4 files with content extraction
 
-- **Frontend**: Next.js 14, React 18, TypeScript
-- **Styling**: TailwindCSS
-- **Backend**: Next.js API Routes
-- **Database**: Firebase Firestore
-- **Authentication**: Firebase Auth (ready for integration)
+### 🤖 **AI-Powered Analysis**
+- **🧠 Google Gemini AI** - Advanced fraud detection using Large Language Models
+- **📊 Risk Scoring** - Confidence levels (0-100%) with detailed reasoning
+- **🎯 Verdict System** - HIGH RISK, WATCH, LIKELY SAFE classifications
+- **📋 Detailed Reasoning** - Specific fraud indicators and evidence links
 
-## Getting Started
+### 📊 **Regulator Dashboard**
+- **📈 Live Monitoring** - Real-time fraud detection alerts and flag management
+- **📊 KPI Cards** - Total flags, high-risk alerts, confidence metrics
+- **🔍 Flag Triage** - Complete workflow for reviewing and managing fraud cases
+- **📈 Market Correlation** - Real-time market data integration with Alpha Vantage API
+
+### 🚨 **Advanced Analytics**
+- **📊 Real-time Charts** - Market correlation visualization using Recharts
+- **🔔 Alert System** - Automated fraud notifications and monitoring
+- **📈 Performance Metrics** - System effectiveness and accuracy tracking
+- **📋 Audit Trail** - Complete action history and regulatory compliance
+
+## 🏗️ Tech Stack
+
+### **Frontend**
+- **⚛️ Next.js 14** - React framework with SSR/SSG capabilities
+- **🔷 TypeScript** - Type-safe development with full type coverage
+- **🎨 TailwindCSS** - Utility-first CSS framework for responsive design
+- **📱 Responsive Design** - Mobile-first approach with modern UI/UX
+
+### **Backend & APIs**
+- **🔌 Next.js API Routes** - Serverless functions for backend logic
+- **🤖 Google Gemini AI** - Advanced fraud analysis and content understanding
+- **📊 Alpha Vantage API** - Real-time market data and stock information
+- **🔍 OpenAI API** - Audio/video transcription and content extraction
+
+### **Database & Storage**
+- **🔥 Firebase Firestore** - Real-time NoSQL database for flags and analytics
+- **☁️ Firebase Storage** - Secure file upload and storage handling
+- **🔐 Firebase Auth** - User authentication system (ready for integration)
+
+### **Deployment & Hosting**
+- **🚀 Vercel** - Production hosting with full API routes support
+- **⚡ Edge Network** - Global CDN distribution for optimal performance
+- **🔄 Auto Deploy** - GitHub integration with automatic deployments
+
+## 🚀 Quick Start
 
 ### Prerequisites
-
 - Node.js 18+ 
 - npm or yarn
 - Firebase project with Firestore enabled
+- Google Gemini API key
 
 ### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/rshashank20/fraudshield-sebi.git
    cd fraudshield-sebi
    ```
 
@@ -39,43 +78,40 @@ A Next.js application for fraud detection and SEBI advisor verification. This ap
    npm install
    ```
 
-3. **Set up Firebase configuration**
-   - Copy `firebaseConfig.example.js` to `firebaseConfig.js`
-   - Replace the placeholder values with your actual Firebase web configuration:
-   ```javascript
-   const firebaseConfig = {
-     apiKey: "your-api-key-here",
-     authDomain: "your-project-id.firebaseapp.com",
-     projectId: "your-project-id",
-     storageBucket: "your-project-id.appspot.com",
-     messagingSenderId: "123456789",
-     appId: "your-app-id-here"
-   };
-   ```
-
-4. **Set up Google Gemini API**
-   - Get your API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
-   - Create a `.env.local` file in the project root:
+3. **Set up environment variables**
    ```bash
-   # Copy from env.example
    cp env.example .env.local
    ```
-   - Edit `.env.local` and add your Gemini API key:
-   ```
-   GEMINI_API_KEY=your_actual_gemini_api_key_here
+   
+   Edit `.env.local` and add your API keys:
+   ```env
+   # Required for AI analysis
+   GEMINI_API_KEY=your_gemini_api_key_here
+   
+   # Optional for enhanced features
+   OPENAI_API_KEY=your_openai_api_key_here
+   ALPHA_VANTAGE_API_KEY=your_alpha_vantage_key_here
+   
+   # Firebase configuration (or use firebaseConfig.js)
+   NEXT_PUBLIC_FIREBASE_API_KEY=your_firebase_api_key
+   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=fraudshield-sebi.firebaseapp.com
+   NEXT_PUBLIC_FIREBASE_PROJECT_ID=fraudshield-sebi
+   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=fraudshield-sebi.firebasestorage.app
+   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=90399181617
+   NEXT_PUBLIC_FIREBASE_APP_ID=1:90399181617:web:73445bb04303a8c23f7e10
    ```
 
-5. **Start the development server**
+4. **Start the development server**
    ```bash
    npm run dev
    ```
 
-6. **Open your browser**
+5. **Open your browser**
    Navigate to [http://localhost:3000](http://localhost:3000)
 
-## Firebase Setup
+## 🔧 Firebase Setup
 
-### 1. Create a Firebase Project
+### 1. Create Firebase Project
 1. Go to [Firebase Console](https://console.firebase.google.com/)
 2. Click "Create a project"
 3. Follow the setup wizard
@@ -93,223 +129,230 @@ A Next.js application for fraud detection and SEBI advisor verification. This ap
 4. Register your app with a nickname
 5. Copy the configuration object and paste it into `firebaseConfig.js`
 
-### 4. Set up Firestore Collections
-The app will automatically create the following collections:
-- `advisors`: SEBI registered advisor information
-- `flags`: User submissions and analysis results
+### 4. Firestore Collections
+The app automatically creates these collections:
+- `flags` - User submissions and analysis results
+- `advisors` - SEBI registered advisor information (for future use)
 
-### 5. (Optional) Seed Mock Data
-If you want to populate the database with mock advisor data:
-
-1. Set up Firebase Admin SDK:
-   ```bash
-   npm install firebase-admin
-   ```
-
-2. Download your service account key from Firebase Console:
-   - Go to Project Settings > Service Accounts
-   - Click "Generate new private key"
-   - Save the JSON file as `service-account-key.json` in the project root
-
-3. Update the path in `scripts/seed-firestore.js`:
-   ```javascript
-   const serviceAccount = require('../service-account-key.json');
-   ```
-
-4. Run the seed script:
-   ```bash
-   node scripts/seed-firestore.js
-   ```
-
-## Local Development with Firebase Emulator (Optional)
-
-For local development without affecting production data:
-
-1. **Install Firebase CLI**
-   ```bash
-   npm install -g firebase-tools
-   ```
-
-2. **Login to Firebase**
-   ```bash
-   firebase login
-   ```
-
-3. **Initialize Firebase in your project**
-   ```bash
-   firebase init
-   ```
-   - Select "Firestore" and "Functions"
-   - Choose your Firebase project
-   - Use default settings
-
-4. **Start the emulator**
-   ```bash
-   firebase emulators:start
-   ```
-
-5. **Update Firebase configuration for emulator**
-   In `lib/firebase.js`, add emulator configuration:
-   ```javascript
-   import { connectFirestoreEmulator } from 'firebase/firestore';
-   
-   // Add this after initializing Firestore
-   if (process.env.NODE_ENV === 'development') {
-     connectFirestoreEmulator(db, 'localhost', 8080);
-   }
-   ```
-
-## Project Structure
+## 📁 Project Structure
 
 ```
 fraudshield-sebi/
-├── pages/
-│   ├── api/                 # API routes
-│   │   ├── check.ts        # Analysis endpoint
-│   │   ├── report.ts       # Report submission
-│   │   └── dashboard.ts    # Dashboard data
-│   ├── index.tsx           # Landing page
-│   ├── verify.tsx          # Verification form
-│   ├── result.tsx          # Results display
-│   ├── dashboard.tsx       # Regulator dashboard
-│   └── _app.tsx           # App wrapper
-├── lib/
-│   ├── firebase.js         # Firebase configuration
-│   └── firestore-models.ts # Data models
-├── styles/
-│   └── globals.css         # Global styles
-├── scripts/
-│   └── seed-firestore.js   # Database seeding
-├── firebaseConfig.example.js
-├── tailwind.config.js
-├── next.config.js
-└── package.json
+├── 📄 pages/                    # Next.js pages and API routes
+│   ├── 🔌 api/                  # API endpoints
+│   │   └── analyze.ts          # AI analysis endpoint
+│   ├── 🏠 index.tsx            # Landing page
+│   ├── ✅ verify.tsx           # Verification form
+│   ├── 📊 result.tsx           # Results display
+│   ├── 🛠️ dashboard.tsx        # Admin dashboard
+│   ├── 📈 regulator.tsx        # Regulator dashboard
+│   ├── 📋 results-dashboard.tsx # Results management
+│   └── 🔍 dashboard/flag/[id].tsx # Flag details page
+├── 🧩 components/              # React components
+│   ├── 📁 FileUpload.tsx       # File upload handler
+│   └── 📊 regulator/           # Dashboard components
+│       ├── Alerts.tsx          # Alert system
+│       ├── CorrelationChart.tsx # Market correlation charts
+│       ├── KPICards.tsx        # KPI metrics cards
+│       └── LiveFeed.tsx        # Real-time feed component
+├── 🔧 lib/                     # Utilities and configurations
+│   ├── firebase.js            # Firebase configuration
+│   └── firestore-models.ts    # TypeScript data models
+├── 🎨 styles/                  # Styling
+│   └── globals.css            # Global CSS styles
+├── 🔧 utils/                   # Helper functions
+│   └── alphaVantage.ts        # Market data API integration
+├── ⚙️ Configuration files      # Build and deployment configs
+│   ├── next.config.js         # Next.js configuration
+│   ├── next.config.prod.js    # Production configuration
+│   ├── next.config.apphosting.js # Firebase App Hosting config
+│   ├── vercel.json            # Vercel deployment configuration
+│   ├── firebase.json          # Firebase configuration
+│   └── tailwind.config.js     # TailwindCSS configuration
+└── 📚 Documentation
+    ├── README.md              # This file
+    └── env.example            # Environment variables template
 ```
 
-## API Endpoints
+## 🔌 API Endpoints
 
-### POST /api/check
-Analyzes input text and returns fraud assessment.
+### POST /api/analyze
+**AI-powered fraud analysis endpoint**
 
-**Request Body:**
+**Request:**
 ```json
 {
-  "inputText": "string",
-  "type": "advisor" | "tip" | "link"
+  "text": "BUY $AAPL NOW! Guaranteed 50% returns in 30 days!",
+  "type": "tip" | "advisor" | "link" | "file"
 }
 ```
 
 **Response:**
 ```json
 {
-  "verdict": "HIGH RISK" | "WATCH" | "LIKELY SAFE",
-  "confidence": 85,
-  "reasons": ["Reason 1", "Reason 2"],
-  "evidence": ["https://example.com"],
-  "flagId": "document-id"
+  "verdict": "HIGH RISK",
+  "confidence": 95,
+  "reasons": ["Contains guaranteed return promises", "Uses pressure tactics"],
+  "evidence": ["https://www.sebi.gov.in/", "https://www.investor.gov/"],
+  "inputText": "BUY $AAPL NOW! Guaranteed 50% returns in 30 days!",
+  "inputType": "tip"
 }
 ```
 
-### POST /api/report
-Reports a flag to SEBI.
+## 🚀 Deployment
 
-**Request Body:**
-```json
-{
-  "flagId": "string",
-  "anonymous": boolean
-}
-```
+### Vercel (Recommended)
+The app is currently deployed on Vercel with full API route support:
 
-### GET /api/dashboard
-Returns dashboard KPIs and recent flags.
+1. **Automatic Deployment**
+   - Push to `main` branch triggers automatic deployment
+   - Environment variables configured in Vercel dashboard
 
-**Response:**
-```json
-{
-  "kpis": {
-    "totalFlags": 100,
-    "highRiskFlags": 25,
-    "watchFlags": 30,
-    "safeFlags": 45,
-    "avgConfidence": 78
-  },
-  "recentFlags": [...]
-}
-```
-
-## Deployment
-
-### Deploy to Firebase Hosting
-
-1. **Build the project**
-   ```bash
-   npm run build
-   ```
-
-2. **Deploy to Firebase Hosting**
-   ```bash
-   firebase deploy --only hosting
-   ```
-
-### Deploy to Vercel
-
-1. **Install Vercel CLI**
+2. **Manual Deployment**
    ```bash
    npm install -g vercel
+   vercel --prod
    ```
 
-2. **Deploy**
-   ```bash
-   vercel
-   ```
+3. **Environment Variables in Vercel**
+   - Go to Project Settings → Environment Variables
+   - Add all required API keys and Firebase configuration
 
-## Environment Variables
-
-Create a `.env.local` file for environment-specific configuration:
-
-```env
-# Google Gemini API (Required for fraud analysis)
-GEMINI_API_KEY=your_gemini_api_key_here
-
-# Firebase Configuration (Optional - can also use firebaseConfig.js)
-NEXT_PUBLIC_FIREBASE_API_KEY=your-api-key
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-project-id
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=123456789
-NEXT_PUBLIC_FIREBASE_APP_ID=your-app-id
+### Firebase Hosting (Alternative)
+```bash
+npm run build
+firebase deploy --only hosting
 ```
 
-### Getting Your Gemini API Key
+## 🔐 Environment Variables
 
+Create a `.env.local` file for local development:
+
+```env
+# AI Services (Required for analysis)
+GEMINI_API_KEY=your_gemini_api_key_here
+OPENAI_API_KEY=your_openai_api_key_here
+ALPHA_VANTAGE_API_KEY=your_alpha_vantage_key_here
+
+# Firebase Configuration (Optional - can use firebaseConfig.js)
+NEXT_PUBLIC_FIREBASE_API_KEY=your_firebase_api_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=fraudshield-sebi.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=fraudshield-sebi
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=fraudshield-sebi.firebasestorage.app
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=90399181617
+NEXT_PUBLIC_FIREBASE_APP_ID=1:90399181617:web:73445bb04303a8c23f7e10
+```
+
+### Getting API Keys
+
+#### Google Gemini API
 1. Go to [Google AI Studio](https://makersuite.google.com/app/apikey)
 2. Sign in with your Google account
 3. Click "Create API Key"
 4. Copy the generated key
-5. Add it to your `.env.local` file
 
-## Contributing
+#### OpenAI API (Optional)
+1. Go to [OpenAI Platform](https://platform.openai.com/api-keys)
+2. Create a new API key
+3. Add to your environment variables
+
+#### Alpha Vantage API (Optional)
+1. Go to [Alpha Vantage](https://www.alphavantage.co/support/#api-key)
+2. Get your free API key
+3. Add to your environment variables
+
+## 📊 Features in Detail
+
+### 🔍 Fraud Detection Capabilities
+- **AI Analysis**: Uses Google Gemini AI for sophisticated fraud detection
+- **Multi-format Support**: Handles text, files, URLs, and advisor names
+- **Real-time Processing**: Fast analysis with detailed reasoning
+- **Confidence Scoring**: 0-100% confidence levels for each analysis
+
+### 📈 Regulator Dashboard
+- **Live Monitoring**: Real-time fraud detection alerts
+- **Flag Management**: Complete triage workflow for regulators
+- **KPI Tracking**: System performance and effectiveness metrics
+- **Market Integration**: Real-time stock data correlation
+
+### 🛡️ Security Features
+- **Type Safety**: Full TypeScript implementation
+- **Error Handling**: Comprehensive error management
+- **Input Validation**: Secure data processing
+- **Environment Security**: Secure API key management
+
+## 🎯 Target Users
+
+### Primary Users
+- **👤 Individual Investors** - Verify advisors and analyze investment tips
+- **🏛️ SEBI Regulators** - Monitor and manage fraud cases
+- **🏦 Financial Institutions** - Internal compliance and due diligence
+
+### Use Cases
+- **🔍 Due Diligence** - Before making investment decisions
+- **📊 Compliance Monitoring** - Regulatory oversight and reporting
+- **🚨 Fraud Prevention** - Early detection and warning systems
+- **📈 Market Surveillance** - Real-time monitoring and analysis
+
+## 🔮 Roadmap
+
+### ✅ Phase 1 (Completed)
+- Core fraud detection functionality
+- Multi-modal input support (text, files, URLs)
+- Regulator dashboard with live monitoring
+- Vercel deployment with API routes
+- Firebase integration for data storage
+- AI-powered analysis with Google Gemini
+
+### 🔄 Phase 2 (In Progress)
+- Enhanced user interface and experience
+- Advanced analytics and reporting
+- Performance optimizations
+- Additional file format support
+
+### 📋 Phase 3 (Planned)
+- User authentication and profiles
+- Mobile app development
+- Real-time notifications
+- Advanced AI model training
+- SEBI API integration
+- Multi-language support
+
+## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## License
+## 📄 License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Support
+## 🆘 Support
 
-For support and questions, please open an issue in the repository.
+For support and questions:
+- Open an issue in the repository
+- Check the documentation
+- Review the API endpoints
 
-## Roadmap
+## 🏆 Acknowledgments
 
-- [ ] LLM integration for advanced fraud detection
-- [ ] User authentication and profiles
-- [ ] Advanced analytics and reporting
-- [ ] Mobile app development
-- [ ] Real-time notifications
-- [ ] Integration with SEBI APIs
+- **Google Gemini AI** for advanced fraud detection capabilities
+- **Vercel** for seamless deployment and hosting
+- **Firebase** for real-time database and storage
+- **Next.js** for the robust React framework
+- **TailwindCSS** for beautiful, responsive design
+
+## 📞 Contact
+
+- **Project Maintainer**: [rshashank20](https://github.com/rshashank20)
+- **Live Demo**: [https://xyz-sepia-psi.vercel.app](https://xyz-sepia-psi.vercel.app)
+- **Repository**: [https://github.com/rshashank20/fraudshield-sebi](https://github.com/rshashank20/fraudshield-sebi)
+
+---
+
+**🛡️ FraudShield SEBI - Protecting Investors Through AI-Powered Fraud Detection**
+
+*Built with ❤️ for the Indian financial market*
