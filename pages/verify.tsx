@@ -62,8 +62,13 @@ export default function Verify() {
         }
       } catch (error) {
         // Fallback to client-side analysis
-        console.log('Using client-side analysis fallback')
-        result = await performClientSideAnalysis(fileInfo.extractedText || fileInfo.name, 'file')
+        console.log('Using client-side analysis fallback:', error)
+        try {
+          result = await performClientSideAnalysis(fileInfo.extractedText || fileInfo.name, 'file')
+        } catch (fallbackError) {
+          console.error('Client-side analysis also failed:', fallbackError)
+          throw new Error('Analysis failed. Please try again.')
+        }
       }
       
       // Store result in sessionStorage to pass to result page
@@ -73,7 +78,8 @@ export default function Verify() {
       router.push('/result')
     } catch (error) {
       console.error('Error processing file:', error)
-      alert('An error occurred while processing the file. Please try again.')
+      const errorMessage = error instanceof Error ? error.message : 'An error occurred while processing the file. Please try again.'
+      alert(errorMessage)
     } finally {
       setIsSubmitting(false)
     }
@@ -110,8 +116,13 @@ export default function Verify() {
         }
       } catch (error) {
         // Fallback to client-side analysis
-        console.log('Using client-side analysis fallback')
-        result = await performClientSideAnalysis(inputText.trim(), inputType)
+        console.log('Using client-side analysis fallback:', error)
+        try {
+          result = await performClientSideAnalysis(inputText.trim(), inputType)
+        } catch (fallbackError) {
+          console.error('Client-side analysis also failed:', fallbackError)
+          throw new Error('Analysis failed. Please try again.')
+        }
       }
       
       // Store result in sessionStorage to pass to result page
@@ -121,7 +132,8 @@ export default function Verify() {
       router.push('/result')
     } catch (error) {
       console.error('Error submitting verification:', error)
-      alert('An error occurred. Please try again.')
+      const errorMessage = error instanceof Error ? error.message : 'An error occurred. Please try again.'
+      alert(errorMessage)
     } finally {
       setIsSubmitting(false)
     }
