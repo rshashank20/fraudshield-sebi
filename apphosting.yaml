@@ -1,0 +1,11 @@
+runConfig:
+  runtime: nodejs20
+  env:
+    - variable: GEMINI_API_KEY
+      value: ${GEMINI_API_KEY}
+    - variable: OPENAI_API_KEY
+      value: ${OPENAI_API_KEY}
+    - variable: ALPHA_VANTAGE_API_KEY
+      value: ${ALPHA_VANTAGE_API_KEY}
+  buildCommand: npm run build
+  startCommand: npm start

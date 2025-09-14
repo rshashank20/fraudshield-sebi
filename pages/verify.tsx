@@ -38,17 +38,14 @@ export default function Verify() {
     setIsSubmitting(true)
 
     try {
-      const response = await fetch('/api/process-file', {
+      const response = await fetch('/api/analyze', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          fileName: fileInfo.name,
-          fileType: fileInfo.type,
-          fileSize: fileInfo.size,
-          downloadURL: fileInfo.downloadURL,
-          extractedText: fileInfo.extractedText,
+          text: fileInfo.extractedText || fileInfo.name,
+          type: 'file'
         }),
       })
 
@@ -74,13 +71,13 @@ export default function Verify() {
     setIsSubmitting(true)
 
     try {
-      const response = await fetch('/api/check', {
+      const response = await fetch('/api/analyze', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          inputText: inputText.trim(),
+          text: inputText.trim(),
           type: inputType,
         }),
       })

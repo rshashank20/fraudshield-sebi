@@ -7,10 +7,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "node scripts/seedFirestore.js",
-    "seed:clear": "node scripts/seedFirestore.js --clear-only",
-    "setup": "node setup-env.js",
-    "export": "next build",
     "deploy": "npm run build && firebase deploy",
     "deploy:hosting": "npm run build && firebase deploy --only hosting",
     "deploy:firestore": "firebase deploy --only firestore"
