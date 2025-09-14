@@ -38,52 +38,9 @@ export default function Verify() {
     setIsSubmitting(true)
 
     try {
-      // Check if we're in a static deployment (no API routes available)
-      const isStaticDeployment = typeof window !== 'undefined' && 
-        (window.location.hostname.includes('web.app') || 
-         window.location.hostname.includes('netlify.app') ||
-         window.location.hostname.includes('vercel.app') ||
-         window.location.hostname.includes('github.io'))
-      
-      console.log('Hostname:', window.location.hostname)
-      console.log('Is static deployment:', isStaticDeployment)
-      
-      let result
-      
-      if (isStaticDeployment) {
-        // Use client-side analysis for static deployment
-        console.log('Using client-side analysis for static deployment')
-        result = await performClientSideAnalysis(fileInfo.extractedText || fileInfo.name, 'file')
-      } else {
-        // Try API first (for local development or server-side deployment)
-        try {
-          const response = await fetch('/api/analyze', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              text: fileInfo.extractedText || fileInfo.name,
-              type: 'file'
-            }),
-          })
-
-          if (response.ok) {
-            const contentType = response.headers.get('content-type')
-            if (contentType && contentType.includes('application/json')) {
-              result = await response.json()
-            } else {
-              throw new Error('API returned non-JSON response')
-            }
-          } else {
-            throw new Error('API not available')
-          }
-        } catch (error) {
-          // Fallback to client-side analysis
-          console.log('Using client-side analysis fallback:', error)
-          result = await performClientSideAnalysis(fileInfo.extractedText || fileInfo.name, 'file')
-        }
-      }
+      // Force client-side analysis for now to avoid API issues
+      console.log('Using client-side analysis (forced)')
+      const result = await performClientSideAnalysis(fileInfo.extractedText || fileInfo.name, 'file')
       
       // Store result in sessionStorage to pass to result page
       sessionStorage.setItem('verdictResult', JSON.stringify(result))
@@ -106,52 +63,9 @@ export default function Verify() {
     setIsSubmitting(true)
 
     try {
-      // Check if we're in a static deployment (no API routes available)
-      const isStaticDeployment = typeof window !== 'undefined' && 
-        (window.location.hostname.includes('web.app') || 
-         window.location.hostname.includes('netlify.app') ||
-         window.location.hostname.includes('vercel.app') ||
-         window.location.hostname.includes('github.io'))
-      
-      console.log('Hostname:', window.location.hostname)
-      console.log('Is static deployment:', isStaticDeployment)
-      
-      let result
-      
-      if (isStaticDeployment) {
-        // Use client-side analysis for static deployment
-        console.log('Using client-side analysis for static deployment')
-        result = await performClientSideAnalysis(inputText.trim(), inputType)
-      } else {
-        // Try API first (for local development or server-side deployment)
-        try {
-          const response = await fetch('/api/analyze', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              text: inputText.trim(),
-              type: inputType,
-            }),
-          })
-
-          if (response.ok) {
-            const contentType = response.headers.get('content-type')
-            if (contentType && contentType.includes('application/json')) {
-              result = await response.json()
-            } else {
-              throw new Error('API returned non-JSON response')
-            }
-          } else {
-            throw new Error('API not available')
-          }
-        } catch (error) {
-          // Fallback to client-side analysis
-          console.log('Using client-side analysis fallback:', error)
-          result = await performClientSideAnalysis(inputText.trim(), inputType)
-        }
-      }
+      // Force client-side analysis for now to avoid API issues
+      console.log('Using client-side analysis (forced)')
+      const result = await performClientSideAnalysis(inputText.trim(), inputType)
       
       // Store result in sessionStorage to pass to result page
       sessionStorage.setItem('verdictResult', JSON.stringify(result))
