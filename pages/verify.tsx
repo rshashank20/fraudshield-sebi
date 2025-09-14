@@ -39,7 +39,14 @@ export default function Verify() {
 
     try {
       // Check if we're in a static deployment (no API routes available)
-      const isStaticDeployment = typeof window !== 'undefined' && window.location.hostname.includes('web.app')
+      const isStaticDeployment = typeof window !== 'undefined' && 
+        (window.location.hostname.includes('web.app') || 
+         window.location.hostname.includes('netlify.app') ||
+         window.location.hostname.includes('vercel.app') ||
+         window.location.hostname.includes('github.io'))
+      
+      console.log('Hostname:', window.location.hostname)
+      console.log('Is static deployment:', isStaticDeployment)
       
       let result
       
@@ -100,7 +107,14 @@ export default function Verify() {
 
     try {
       // Check if we're in a static deployment (no API routes available)
-      const isStaticDeployment = typeof window !== 'undefined' && window.location.hostname.includes('web.app')
+      const isStaticDeployment = typeof window !== 'undefined' && 
+        (window.location.hostname.includes('web.app') || 
+         window.location.hostname.includes('netlify.app') ||
+         window.location.hostname.includes('vercel.app') ||
+         window.location.hostname.includes('github.io'))
+      
+      console.log('Hostname:', window.location.hostname)
+      console.log('Is static deployment:', isStaticDeployment)
       
       let result
       
@@ -154,11 +168,14 @@ export default function Verify() {
   }
 
   const performClientSideAnalysis = async (text: string, type: string) => {
+    console.log('Starting client-side analysis for:', text, 'type:', type)
+    
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 2000))
     
     // Simple client-side fraud detection
     const lowerText = text.toLowerCase()
+    console.log('Analyzing text:', lowerText)
     
     // High risk indicators
     const highRiskKeywords = [
