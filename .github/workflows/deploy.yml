@@ -24,7 +24,9 @@ jobs:
       run: npm ci
       
     - name: Build
-      run: npm run build
+      run: |
+        cp next.config.prod.js next.config.js
+        npm run build
       env:
         GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}

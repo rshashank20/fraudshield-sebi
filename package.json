@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:apphosting": "next build -c next.config.apphosting.js",
     "build:static": "cp next.config.prod.js next.config.js && next build && cp next.config.js next.config.backup.js",
     "start": "next start",
     "lint": "next lint",
