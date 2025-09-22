@@ -195,6 +195,9 @@ export default function ResultsDashboard() {
                 <Link href="/regulator" className="text-gray-600 hover:text-gray-900">
                   Live Monitor
                 </Link>
+                <Link href="/corporate-checker" className="text-gray-600 hover:text-gray-900">
+                  Credibility Checker
+                </Link>
                 <Link href="/verify" className="text-gray-600 hover:text-gray-900">
                   Verify
                 </Link>

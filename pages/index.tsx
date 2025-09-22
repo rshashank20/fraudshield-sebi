@@ -23,6 +23,9 @@ export default function Home() {
                 <Link href="/dashboard" className="text-gray-600 hover:text-gray-900">
                   Dashboard
                 </Link>
+                <Link href="/corporate-checker" className="text-gray-600 hover:text-gray-900">
+                  Credibility Checker
+                </Link>
               </div>
             </div>
           </div>

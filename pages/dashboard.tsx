@@ -308,6 +308,9 @@ export default function Dashboard() {
                 <Link href="/results-dashboard" className="text-gray-600 hover:text-gray-900">
                   File Results
                 </Link>
+                <Link href="/corporate-checker" className="text-gray-600 hover:text-gray-900">
+                  Credibility Checker
+                </Link>
                 <Link href="/verify" className="text-gray-600 hover:text-gray-900">
                   Verify
                 </Link>
